@@ -1,0 +1,54 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.10.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+	id "org.flywaydb.flyway" version "5.0.7"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+flyway {
+	url = 'jdbc:mysql://localhost/matchmakinglocal?useSSL=false'
+	user = 'root'
+	password = '12345'
+	driver='com.mysql.jdbc.Driver'
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('mysql:mysql-connector-java')
+	compile('org.springframework.security.oauth:spring-security-oauth2')
+	compile('com.github.seratch:jslack:1.0.25')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	compile('org.webjars:js-cookie:2.1.0')
+	compile('org.webjars:jquery:2.1.1')
+	compile('org.webjars:bootstrap:3.2.0')
+	compile('org.webjars:webjars-locator')
+	compile 'com.squareup.retrofit2:retrofit:2.3.0'
+	runtime('org.postgresql:postgresql')
+	compile('org.flywaydb:flyway-core:5.0.7')
+	compile('com.squareup.retrofit2:converter-jackson:2.3.0')
+	compile 'com.sendgrid:sendgrid-java:4.0.1'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Main Page</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <base href="/" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1>Match Making Apllication</h1>
+<div th:if="${principal} == null">
+    <h3>Login</h3>
+    <div>
+        With Google: <a href="/login/google">click here</a>
+    </div>
+</div>
+<div th:unless="${principal} == null">
+    <p th:text="'Logged in as: ' + ${principal.userAuthentication.details.name}"></p>
+    <div>
+        <form action="#" th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+    <form action="#" th:action="@{/slack/send}" method="post">
+        <button type="submit">Send</button>
+    </form>
+    <form action="#" th:action="@{/slack/lookUpUser}" method="post">
+        <button type="submit">Look Up</button>
+    </form>
+    <a href="/admin">Go to Admin Page</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Main Page</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <base href="/" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h1 th:text="'Hello ' + ${principal.userAuthentication.details.name}"></h1>
+    <p th:text="'You have logged in with the email: ' + ${principal.userAuthentication.details.email}"></p>
+
+    <form action="#" th:action="@{/mail/send}" method="post">
+        <button type="submit" class="btn btn-warning">Send Notification</button>
+    </form>
+</body>
+</html>
