@@ -29,20 +29,15 @@ public class MatchmakingService {
     HashMap<String, String> matches = new HashMap<>();
     int changed = 1;
     int unChanged = 0;
-    int numOfApprentices = apprentices.size();
     int numOfPartners = partners.size();
     boolean[] notFreePartners = new boolean[numOfPartners];
     Apprentice[] partnerChoices = new Apprentice[numOfPartners];
     while(!(changed == unChanged)) {
       changed = unChanged;
-      for (int i = 0; i < numOfApprentices; i++) {
-        Apprentice thisApprentice = apprentices.get(i);
-        boolean notBreak = true;
+      for (Apprentice thisApprentice : apprentices) {
         List<Preference> thisPreferences = thisApprentice.getPreferences();
         thisPreferences.sort(Comparator.comparing(Preference::getRanking));
-        int thisPreferenceSize = thisPreferences.size();
-        for (int j = 0; j < thisPreferenceSize && notBreak; j++) {
-          Preference thePreference = thisPreferences.get(j);
+        for (Preference thePreference : thisPreferences) {
           Partner thePartner = partnerService.findOne(thePreference.getSelectionId());
           int thePartnerIndex = getPartnerIndex(partners, thePartner);
           boolean isNotFree = notFreePartners[thePartnerIndex];
@@ -51,7 +46,6 @@ public class MatchmakingService {
             notFreePartners[thePartnerIndex] = true;
             partnerChoices[thePartnerIndex] = thisApprentice;
             changed++;
-            notBreak = false;
             break;
           } else {
             Apprentice currentPairOfThePartner = partnerChoices[thePartnerIndex];
@@ -59,7 +53,6 @@ public class MatchmakingService {
               partnerChoices[thePartnerIndex] = thisApprentice;
               matches.put(thisApprentice.getId(), thePartner.getId());
               changed++;
-              notBreak = false;
               break;
             }
           }
