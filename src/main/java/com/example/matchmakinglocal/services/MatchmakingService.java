@@ -55,7 +55,7 @@ public class MatchmakingService {
             break;
           } else {
             Apprentice currentPairOfThePartner = partnerChoices[thePartnerIndex];
-            if (wannaSwap2(thePartner, currentPairOfThePartner, thisApprentice, matches)) {
+            if (wannaSwap(thePartner, currentPairOfThePartner, thisApprentice, matches)) {
               partnerChoices[thePartnerIndex] = thisApprentice;
               matches.put(thisApprentice.getId(), thePartner.getId());
               changed++;
@@ -87,23 +87,7 @@ public class MatchmakingService {
     return -1;
   }
 
-  private boolean wannaSwap(Partner partner, Apprentice currentChoice, Apprentice newChoice) {
-    int numOfPreference = partner.getPreferences().size();
-    List<Preference> thisPreferences = partner.getPreferences();
-    for (int i = 0; i < numOfPreference; i++) {
-      String thisApprenticeId = thisPreferences.get(i).getSelectionId();
-      Apprentice thisApprentice = apprenticeService.findById(thisApprenticeId);
-      if(thisApprentice == currentChoice) {
-        return false;
-      }
-      if(thisApprentice == newChoice) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean wannaSwap2(Partner partner, Apprentice currentChoice, Apprentice newChoice, HashMap<String, String> matches) {
+  private boolean wannaSwap(Partner partner, Apprentice currentChoice, Apprentice newChoice, HashMap<String, String> matches) {
     if (findApprenticeCurrentPartnerId(newChoice, matches) != null) {
       Partner currentPartnerOfNewChoice = partnerService.findOne(findApprenticeCurrentPartnerId(newChoice, matches));
       int currentTotalRank = findRankOfApprenticeInPartnerPreference(partner, currentChoice) + findRankOfPartnerInApprenticePreference(currentChoice, partner);
