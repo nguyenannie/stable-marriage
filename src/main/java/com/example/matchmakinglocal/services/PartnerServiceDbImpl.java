@@ -11,8 +11,14 @@ import java.util.List;
 @Service
 public class PartnerServiceDbImpl implements PartnerService {
 
-    @Autowired
+    final
     PartnerRepository partnerRepository;
+
+    @Autowired
+    public PartnerServiceDbImpl(PartnerRepository partnerRepository) {
+        this.partnerRepository = partnerRepository;
+    }
+
     @Override
     public void save(Partner partner) {
         partnerRepository.save(partner);

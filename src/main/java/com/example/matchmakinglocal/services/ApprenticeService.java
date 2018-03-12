@@ -7,10 +7,11 @@ import java.util.List;
 
 @Service
 public interface ApprenticeService {
-    void save(Apprentice apprentice);
-    Apprentice findById(String id);
-    List retrieveApprentices(Apprentice filter);
-    List<Apprentice> findAll();
+  void save(Apprentice apprentice);
+  Apprentice findById(String id);
+  List retrieveApprentices(Apprentice filter);
+  List<Apprentice> findAll();
 //    List<Apprentice> findByCohortClassAndEmail(String cohortClass, String email);
 //    List<Apprentice> findOptional(String cohortClass, String email);
+
 }

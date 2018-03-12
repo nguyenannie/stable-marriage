@@ -23,6 +23,135 @@ public class MatchmakingService {
     this.partnerService = partnerService;
   }
 
+  //second approach
+
+  public HashMap<String, String> secondApproach(List<Apprentice> apprentices, List<Partner> partners) {
+    HashMap<String, String> matches = new HashMap<>();
+    int changed = 1;
+    int unChanged = 0;
+    int numOfApprentices = apprentices.size();
+    int numOfPartners = partners.size();
+    boolean[] notFreePartners = new boolean[numOfPartners];
+    Apprentice[] partnerChoices = new Apprentice[numOfPartners];
+    while(!(changed == unChanged)) {
+      changed = unChanged;
+      for (int i = 0; i < numOfApprentices; i++) {
+        Apprentice thisApprentice = apprentices.get(i);
+        boolean notBreak = true;
+        List<Preference> thisPreferences = thisApprentice.getPreferences();
+        thisPreferences.sort(Comparator.comparing(Preference::getRanking));
+        int thisPreferenceSize = thisPreferences.size();
+        for (int j = 0; j < thisPreferenceSize && notBreak; j++) {
+          Preference thePreference = thisPreferences.get(j);
+          Partner thePartner = partnerService.findOne(thePreference.getSelectionId());
+          int thePartnerIndex = getPartnerIndex(partners, thePartner);
+          boolean isNotFree = notFreePartners[thePartnerIndex];
+          if (!isNotFree) {
+            matches.put(thisApprentice.getId(), thePartner.getId());
+            notFreePartners[thePartnerIndex] = true;
+            partnerChoices[thePartnerIndex] = thisApprentice;
+            changed++;
+            notBreak = false;
+            break;
+          } else {
+            Apprentice currentPairOfThePartner = partnerChoices[thePartnerIndex];
+            if (wannaSwap2(thePartner, currentPairOfThePartner, thisApprentice, matches)) {
+              partnerChoices[thePartnerIndex] = thisApprentice;
+              matches.put(thisApprentice.getId(), thePartner.getId());
+              changed++;
+              notBreak = false;
+              break;
+            }
+          }
+        }
+      }
+    }
+    return matches;
+  }
+
+  private int getPartnerIndex(List<Partner> partners, Partner partner) {
+    for (int i = 0; i < partners.size(); i++) {
+      if(Objects.equals(partners.get(i).getId(), partner.getId())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private int getApprenticeIndex(List<Apprentice> apprentices, Apprentice apprentice) {
+    for (int i = 0; i < apprentices.size(); i++) {
+      if(apprentices.get(i) == apprentice) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private boolean wannaSwap(Partner partner, Apprentice currentChoice, Apprentice newChoice) {
+    int numOfPreference = partner.getPreferences().size();
+    List<Preference> thisPreferences = partner.getPreferences();
+    for (int i = 0; i < numOfPreference; i++) {
+      String thisApprenticeId = thisPreferences.get(i).getSelectionId();
+      Apprentice thisApprentice = apprenticeService.findById(thisApprenticeId);
+      if(thisApprentice == currentChoice) {
+        return false;
+      }
+      if(thisApprentice == newChoice) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean wannaSwap2(Partner partner, Apprentice currentChoice, Apprentice newChoice, HashMap<String, String> matches) {
+    if (findApprenticeCurrentPartnerId(newChoice, matches) != null) {
+      Partner currentPartnerOfNewChoice = partnerService.findOne(findApprenticeCurrentPartnerId(newChoice, matches));
+      int currentTotalRank = findRankOfApprenticeInPartnerPreference(partner, currentChoice) + findRankOfPartnerInApprenticePreference(currentChoice, partner);
+      int newTotalRank = findRankOfApprenticeInPartnerPreference(partner, newChoice) + findRankOfPartnerInApprenticePreference(newChoice, currentPartnerOfNewChoice);
+      return currentTotalRank > newTotalRank;
+    } else {
+      return false;
+    }
+  }
+
+  private int findRankOfApprenticeInPartnerPreference(Partner partner, Apprentice apprentice) {
+    List<Preference> preferences = partner.getPreferences();
+    for (Preference preference : preferences) {
+      if (preference.getSelectionId().equals(apprentice.getId())) {
+        return preference.getRanking();
+      }
+    }
+    //just return something very big that it's rank always loses
+    return apprenticeService.findAll().size() + 10;
+  }
+
+  private int findRankOfPartnerInApprenticePreference(Apprentice apprentice, Partner partner) {
+    List<Preference> preferences = apprentice.getPreferences();
+    for (Preference preference : preferences) {
+      if (preference.getSelectionId().equals(partner.getId())) {
+        return preference.getRanking();
+      }
+    }
+    //just return something very big that it's rank always loses
+    return partnerService.findAll().size() + 10;
+  }
+
+  private String findApprenticeCurrentPartnerId(Apprentice apprentice, HashMap<String, String> matches) {
+    String apprenticeId = apprentice.getId();
+    if(matches.containsValue(apprenticeId)) {
+      for (Map.Entry<String, String> entry : matches.entrySet()) {
+        if (apprenticeId.equals(entry.getValue())) {
+          return entry.getKey();
+        }
+      }
+      return null;
+    } else {
+      return null;
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////
+  //do't read this, all bad attempt but can be improved and debugged later maybe?
   //first approach
 
   // find all the apprentices for a @partner that ranked that partner at @rank
@@ -100,85 +229,6 @@ public class MatchmakingService {
     return notWantedPartners;
   }
 
-  //second approach
-
-//  public HashMap<Apprentice, Partner> secondApproach() {
-//    HashMap<Apprentice, Partner> matches = new HashMap<>();
-//    int changed = 0;
-//    int unChanged = 1;
-//    int numOfApprentices = apprentices.size();
-//    int numOfPartners = partners.size();
-//    boolean[] notFreePartners = new boolean[numOfPartners];
-//    boolean notBreak = true;
-//    Apprentice[] partnerChoices = new Apprentice[numOfPartners];
-//    while(!(changed == unChanged)) {
-//      changed = unChanged;
-//      for (int i = 0; i < numOfApprentices; i++) {
-//        Apprentice thisApprentice = apprentices.get(i);
-//        List<Preference> thisPreferences = thisApprentice.getPreferences();
-//        int thisPreferenceSize = thisPreferences.size();
-//        for (int j = 0; j < thisPreferenceSize && notBreak; j++) {
-//          Preference thePreference = thisPreferences.get(j);
-//          Partner thePartner = partnerService.findOne(thePreference.getSelectionId());
-//          int thePartnerIndex = getPartnerIndex(thePartner);
-//          boolean isNotFree = notFreePartners[thePartnerIndex];
-//          if (!isNotFree) {
-//            matches.put(thisApprentice, thePartner);
-//            notFreePartners[thePartnerIndex] = true;
-//            partnerChoices[thePartnerIndex] = thisApprentice;
-//            changed++;
-//            notBreak = false;
-//            break;
-//          } else {
-//            Apprentice currentPairOfThePartner = partnerChoices[thePartnerIndex];
-//            if (wannaSwap(thePartner, currentPairOfThePartner, thisApprentice)) {
-//              partnerChoices[thePartnerIndex] = thisApprentice;
-//              matches.put(thisApprentice, thePartner);
-//              changed++;
-//              notBreak = false;
-//              break;
-//            }
-//          }
-//        }
-//      }
-//    }
-//    return matches;
-//  }
-//
-//  private int getPartnerIndex(Partner partner) {
-//    for (int i = 0; i < partners.size(); i++) {
-//      if(Objects.equals(partners.get(i).getId(), partner.getId())) {
-//        return i;
-//      }
-//    }
-//    return -1;
-//  }
-//
-//  private int getApprenticeIndex(Apprentice apprentice) {
-//    for (int i = 0; i < apprentices.size(); i++) {
-//      if(apprentices.get(i) == apprentice) {
-//        return i;
-//      }
-//    }
-//    return -1;
-//  }
-//
-//  private boolean wannaSwap(Partner partner, Apprentice currentChoice, Apprentice newChoice) {
-//    int numOfPreference = partner.getPreferences().size();
-//    List<Preference> thisPreferences = partner.getPreferences();
-//    for (int i = 0; i < numOfPreference; i++) {
-//      String thisApprenticeId = thisPreferences.get(i).getSelectionId();
-//      Apprentice thisApprentice = apprenticeService.findById(thisApprenticeId);
-//      if(thisApprentice == currentChoice) {
-//        return false;
-//      }
-//      if(thisApprentice == newChoice) {
-//        return true;
-//      }
-//    }
-//    return false;
-//  }
-
 
   // losing approach
 
@@ -232,6 +282,9 @@ public class MatchmakingService {
     System.out.println(stringMap);
     return stringMap;
   }
+
+
+
 }
 
 

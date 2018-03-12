@@ -39,12 +39,13 @@ public class AlgorithmService {
 
       for (int i = 0; i < allApprentices.size(); i++) {
 
+
         List<Preference> currentUserPreferenceList = preferenceRepository.findByUser(allApprentices.get(i));
         currentUserPreferenceList.sort(Comparator.comparing(Preference::getRanking));
 
         for (int j = 0; j < currentUserPreferenceList.size(); j++) {
 
-          if (partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId().isEmpty()) {
+          if (partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId().equals("")) {
 
             createMatch(currentUserPreferenceList, allApprentices, i, j);
 
@@ -52,7 +53,10 @@ public class AlgorithmService {
 
             break;
 
-          } else {
+          } else if(!(preferenceRepository
+                  .findByUserAndSelectionId(
+                          partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()),
+                          allApprentices.get(i).getId()) == null)){
 
             int partnerSRankingOfAlreadyRecordedApprenticeMatch = preferenceRepository
                     .findByUserAndSelectionId(
@@ -68,7 +72,7 @@ public class AlgorithmService {
 
             int apprenticeSRankingOfAlreadyRecordedPartnerMatch = preferenceRepository
                     .findByUserAndSelectionId(
-                            apprenticeRepository.findOne(
+                            apprenticeRepository.findById(
                                     partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId())
                                             .getMatchedUserId()),
                             currentUserPreferenceList.get(j).getSelectionId())
@@ -89,7 +93,7 @@ public class AlgorithmService {
             } else if ((partnerSRankingOfCurrentApprenticeMatch + apprenticeSRankingOfCurrentPartnerMatch) ==
                     (partnerSRankingOfAlreadyRecordedApprenticeMatch + apprenticeSRankingOfAlreadyRecordedPartnerMatch) &&
                     !(allApprentices.get(i).getId()).equals(
-                            apprenticeRepository.findOne(
+                            apprenticeRepository.findById(
                                     partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId())
                                             .getMatchedUserId()).getId())) {
 
@@ -136,10 +140,10 @@ public class AlgorithmService {
   }
 
   public void deleteAlreadyRecordedApprenticeMatch(List<Preference> currentUserPreferenceList, int j) {
-    apprenticeRepository.findOne(
+    apprenticeRepository.findById(
             partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId())
             .setMatchedUserId(null);
-    apprenticeRepository.save(apprenticeRepository.findOne(
+    apprenticeRepository.save(apprenticeRepository.findById(
             partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId()));
   }
 

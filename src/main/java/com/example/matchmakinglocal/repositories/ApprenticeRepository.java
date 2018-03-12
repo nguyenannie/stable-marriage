@@ -18,5 +18,6 @@ public interface ApprenticeRepository extends CrudRepository<Apprentice, String>
   List<Apprentice> findByCohortClass(String cohortClass);
   List<Apprentice> findByEmail(String email);
   List<Apprentice> findAll();
+  Apprentice findById(String id);
 }
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +64,8 @@ public class MainController {
   }
 
   @GetMapping("/getMatches")
-  public List getMatches() {
-    return algorithmService.matchmaker();
+  public HashMap<String, String> getMatches() {
+    return matchmakingService.secondApproach(apprenticeService.findAll(), partnerService.findAll());
     //return matchmakingService.losingApproach();
   }
 
