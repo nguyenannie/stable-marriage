@@ -16,23 +16,22 @@ import java.util.Map;
 @RestController
 public class MainController {
 
-  @Autowired
-  PreferenceService preferenceService;
+  private final PreferenceService preferenceService;
+  private final ApprenticeService apprenticeService;
+  private final PartnerService partnerService;
+  private final TestApiService testApiService;
+  private final MatchmakingService matchmakingService;
+  private final AlgorithmService algorithmService;
 
   @Autowired
-  ApprenticeService apprenticeService;
-
-  @Autowired
-  PartnerService partnerService;
-
-  @Autowired
-  TestApiService testApiService;
-
-  @Autowired
-  MatchmakingService matchmakingService;
-
-  @Autowired
-  AlgorithmService algorithmService;
+  public MainController(PreferenceService preferenceService, ApprenticeService apprenticeService, PartnerService partnerService, TestApiService testApiService, MatchmakingService matchmakingService, AlgorithmService algorithmService) {
+    this.preferenceService = preferenceService;
+    this.apprenticeService = apprenticeService;
+    this.partnerService = partnerService;
+    this.testApiService = testApiService;
+    this.matchmakingService = matchmakingService;
+    this.algorithmService = algorithmService;
+  }
 
   @GetMapping("/user")
   public Principal user(Principal principal) {
@@ -64,9 +63,12 @@ public class MainController {
   }
 
   @GetMapping("/getMatches")
-  public HashMap<String, String> getMatches() {
-    return matchmakingService.secondApproach(apprenticeService.findAll(), partnerService.findAll());
-    //return matchmakingService.losingApproach();
+  public Map getMatches() {
+    int[][] apprenticePreferences = matchmakingService.convertApprenticePreference();
+    int[][] partnerPreferences = matchmakingService.convertPartnerPreference();
+    int[] partnerChoices = matchmakingService.secondApproachAdjustment(apprenticePreferences, partnerPreferences,
+            apprenticePreferences.length, partnerPreferences.length);
+    return matchmakingService.convertMatches(partnerChoices);
   }
 
 }

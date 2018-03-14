@@ -11,7 +11,7 @@ public class MatchMakingAlgorithm {
   int[][] apprenticeChoice;
   int[][] partnerChoice;
 
-  public MatchMakingAlgorithm(int apprenticeNum, int partnerNum, int[][] apprenticeChoice, int[][] partnerChoice) {
+  public MatchMakingAlgorithm(int apprenticeNum, int partnerNum, int[][] prenticeChoice, int[][] partnerChoice) {
     this.apprenticeChoice = apprenticeChoice;
     this.partnerChoice = partnerChoice;
     this.apprenticeNum = apprenticeNum;

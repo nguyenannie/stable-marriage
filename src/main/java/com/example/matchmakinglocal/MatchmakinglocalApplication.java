@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 public class MatchmakinglocalApplication {
 
 	public static void main(String[] args) {
+    SpringApplication.run(MatchmakinglocalApplication.class, args);
+  }
 //	  int[][] apprenticeChoice = {{},
 //	                              {0,5,7,1,2,6,8,4,3},
 //                                {0,2,3,7,5,4,1,8,6},
@@ -71,37 +73,36 @@ public class MatchmakinglocalApplication {
 //            {0,5,6,3,8,7,4,2,1},
 //            {0,3,5,1,7,8,4,2,6}};
 
-      int[][] apprenticeChoice = {{},
-            {0,2,1,3},
-            {0,1,3,2},
-            {0,1,2,3},
-            {0,3,1,2},
-            {0,1,2,3}};
+//      int[][] apprenticeChoice = {{},
+//            {0,2,1,3},
+//            {0,1,3,2},
+//            {0,1,2,3},
+//            {0,3,1,2},
+//            {0,1,2,3}};
+//
+//    int[][] partnerChoices = {{},
+//            {0,2,5,1,3,4},
+//            {0,3,1,5,2,4},
+//            {0,3,2,1,5,4}};
 
-    int[][] partnerChoices = {{},
-            {0,2,5,1,3,4},
-            {0,3,1,5,2,4},
-            {0,3,2,1,5,4}};
+//    MatchMakingAlgorithm m = new MatchMakingAlgorithm(5,3, apprenticeChoice, partnerChoices);
+//
+//    m.execute();
+//
+//    for (int i = 0; i < m.match.length; i++) {
+//      System.out.println(m.match[i]);
+//    }
+//
+//    System.out.println("----------------------");
+//
+//		SpringApplication.run(MatchmakinglocalApplication.class, args);
 
-    MatchMakingAlgorithm m = new MatchMakingAlgorithm(5,3, apprenticeChoice, partnerChoices);
+  @Bean
+  public CommandLineRunner demo(PartnerService partnerService, ApprenticeService apprenticeService, PreferenceService preferenceService) {
+      return (String... args) -> {
 
-    m.execute();
-
-    for (int i = 0; i < m.match.length; i++) {
-      System.out.println(m.match[i]);
-    }
-
-    System.out.println("----------------------");
-
-		SpringApplication.run(MatchmakinglocalApplication.class, args);
-	}
-
-    @Bean
-    public CommandLineRunner demo(PartnerService partnerService, ApprenticeService apprenticeService, PreferenceService preferenceService) {
-        return (String... args) -> {
-
-        };
-    }
+      };
+  }
 }
 
 //            Apprentice apprentice = new Apprentice();

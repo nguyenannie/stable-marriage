@@ -14,46 +14,60 @@ import java.util.stream.Collectors;
 @Service
 public class MatchmakingService {
 
-  final ApprenticeService apprenticeService;
-  final PartnerService partnerService;
+  private final ApprenticeService apprenticeService;
+  private final PartnerService partnerService;
+  private List<Apprentice> apprentices;
+  private List<Partner> partners;
 
   @Autowired
   public MatchmakingService(ApprenticeService apprenticeService, PartnerService partnerService) {
     this.apprenticeService = apprenticeService;
     this.partnerService = partnerService;
+    apprentices = apprenticeService.findAll();
+    partners = partnerService.findAll();
   }
 
   //second approach
 
-  public HashMap<String, String> secondApproach(List<Apprentice> apprentices, List<Partner> partners) {
+  public Map secondApproach(List<Apprentice> apprentices, List<Partner> partners) {
     HashMap<String, String> matches = new HashMap<>();
     int changed = 1;
     int unChanged = 0;
     int numOfPartners = partners.size();
     boolean[] notFreePartners = new boolean[numOfPartners];
     Apprentice[] partnerChoices = new Apprentice[numOfPartners];
-    while(!(changed == unChanged)) {
+    while(changed != unChanged) {
       changed = unChanged;
       for (Apprentice thisApprentice : apprentices) {
+
         List<Preference> thisPreferences = thisApprentice.getPreferences();
         thisPreferences.sort(Comparator.comparing(Preference::getRanking));
+
         for (Preference thePreference : thisPreferences) {
           Partner thePartner = partnerService.findOne(thePreference.getSelectionId());
-          int thePartnerIndex = getPartnerIndex(partners, thePartner);
-          boolean isNotFree = notFreePartners[thePartnerIndex];
-          if (!isNotFree) {
-            matches.put(thisApprentice.getId(), thePartner.getId());
-            notFreePartners[thePartnerIndex] = true;
-            partnerChoices[thePartnerIndex] = thisApprentice;
-            changed++;
-            break;
+          if(findApprenticeCurrentPartnerId(thisApprentice, matches) != null) {
+            String apprenticeCurrentPartnerId = findApprenticeCurrentPartnerId(thisApprentice, matches);
+            Partner apprenticeCurrentPartner = partnerService.findOne(apprenticeCurrentPartnerId);
+            if (findRankOfPartnerInApprenticePreference(thisApprentice, apprenticeCurrentPartner) < findRankOfPartnerInApprenticePreference(thisApprentice, thePartner)) {
+              break;
+            }
           } else {
-            Apprentice currentPairOfThePartner = partnerChoices[thePartnerIndex];
-            if (wannaSwap(thePartner, currentPairOfThePartner, thisApprentice, matches)) {
+            int thePartnerIndex = getPartnerIndex(partners, thePartner);
+            boolean isNotFree = notFreePartners[thePartnerIndex];
+            if (!isNotFree) {
+              matches.put(thePartner.getId(), thisApprentice.getId());
+              notFreePartners[thePartnerIndex] = true;
               partnerChoices[thePartnerIndex] = thisApprentice;
-              matches.put(thisApprentice.getId(), thePartner.getId());
               changed++;
               break;
+            } else {
+              Apprentice currentPairOfThePartner = partnerChoices[thePartnerIndex];
+              if (wannaSwap(thePartner, currentPairOfThePartner, thisApprentice, matches)) {
+                partnerChoices[thePartnerIndex] = thisApprentice;
+                matches.put(thePartner.getId(), thisApprentice.getId());
+                changed++;
+                break;
+              }
             }
           }
         }
@@ -81,14 +95,9 @@ public class MatchmakingService {
   }
 
   private boolean wannaSwap(Partner partner, Apprentice currentChoice, Apprentice newChoice, HashMap<String, String> matches) {
-    if (findApprenticeCurrentPartnerId(newChoice, matches) != null) {
-      Partner currentPartnerOfNewChoice = partnerService.findOne(findApprenticeCurrentPartnerId(newChoice, matches));
-      int currentTotalRank = findRankOfApprenticeInPartnerPreference(partner, currentChoice) + findRankOfPartnerInApprenticePreference(currentChoice, partner);
-      int newTotalRank = findRankOfApprenticeInPartnerPreference(partner, newChoice) + findRankOfPartnerInApprenticePreference(newChoice, currentPartnerOfNewChoice);
-      return currentTotalRank > newTotalRank;
-    } else {
-      return false;
-    }
+    int currentPairRank = findRankOfApprenticeInPartnerPreference(partner, currentChoice) + findRankOfPartnerInApprenticePreference(currentChoice, partner);
+    int newPairRank = findRankOfApprenticeInPartnerPreference(partner, newChoice) + findRankOfPartnerInApprenticePreference(newChoice, partner);
+    return currentPairRank > newPairRank;
   }
 
   private int findRankOfApprenticeInPartnerPreference(Partner partner, Apprentice apprentice) {
@@ -127,8 +136,125 @@ public class MatchmakingService {
     }
   }
 
+  //second approach adjustment
+
+  public int[] secondApproachAdjustment(int[][] apprenticePreference, int[][] partnerPreference, int apprenticeSize, int partnerSize) {
+    HashMap<Integer, Integer> matches = new HashMap<>();
+    boolean changed;
+    boolean[] notFreePartners = new boolean[partnerSize];
+    int[] partnerChoices = new int[partnerSize];
+    do {
+      changed = false;
+      for (int i = 0; i < apprenticeSize; i++) {
+        int[] thisPreferences = apprenticePreference[i];
+        for (int thisPreference : thisPreferences) {
+          if(findApprenticeCurrentPartnerIdAd(i, matches) != null) {
+            int apprenticeCurrentPartner = findApprenticeCurrentPartnerIdAd(i, matches);
+            if (findRankOfPartnerInApprenticePreferenceAd(i, apprenticeCurrentPartner, apprenticePreference) < findRankOfPartnerInApprenticePreferenceAd(i, thisPreference, apprenticePreference)) {
+              break;
+            }
+          } else {
+            boolean isNotFree = notFreePartners[thisPreference];
+            if (!isNotFree) {
+              matches.put(thisPreference, i);
+              notFreePartners[thisPreference] = true;
+              partnerChoices[thisPreference] = i;
+              changed = true;
+              break;
+            } else {
+              int currentPairOfThePartner = partnerChoices[thisPreference];
+              if (wannaSwapAdjustment(thisPreference, currentPairOfThePartner, i, matches, apprenticePreference, partnerPreference)) {
+                partnerChoices[thisPreference] = i;
+                matches.put(thisPreference, i);
+                changed = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+    } while (changed);
+    return partnerChoices;
+  }
+
+  private boolean wannaSwapAdjustment(int partner, int currentChoice, int newChoice, HashMap<Integer, Integer> matches, int[][] apprenticePreferences, int[][] partnerPreferences) {
+    int currentTotalRank = findRankOfApprenticeInPartnerPreferenceAd(partner, currentChoice, partnerPreferences) + findRankOfPartnerInApprenticePreferenceAd(currentChoice, partner, apprenticePreferences);
+    int newTotalRank = findRankOfApprenticeInPartnerPreferenceAd(partner, newChoice, partnerPreferences) + findRankOfPartnerInApprenticePreferenceAd(newChoice, partner, apprenticePreferences);
+    return currentTotalRank > newTotalRank;
+  }
+
+  private Integer findApprenticeCurrentPartnerIdAd(int apprentice, HashMap<Integer, Integer> matches) {
+    if(matches.containsValue(apprentice)) {
+      for (Map.Entry<Integer, Integer> entry : matches.entrySet()) {
+        if (apprentice == entry.getValue()) {
+          return entry.getKey();
+        }
+      }
+      return null;
+    } else {
+      return null;
+    }
+  }
+
+  private int findRankOfApprenticeInPartnerPreferenceAd(int partner, int apprentice, int[][] partnerPreference) {
+    int[] preferences = partnerPreference[partner];
+    for (int i = 0; i < preferences.length; i++) {
+      if (preferences[i] == apprentice) {
+        return i + 1;
+      }
+    }
+    return Integer.MAX_VALUE;
+  }
+
+  private int findRankOfPartnerInApprenticePreferenceAd(int apprentice, int partner, int[][] apprenticePreference) {
+    int[] preferences = apprenticePreference[apprentice];
+    for (int i = 0; i < preferences.length; i++) {
+      if (preferences[i] == partner) {
+        return i + 1;
+      }
+    }
+    return Integer.MAX_VALUE;
+  }
+
+  public int[][] convertApprenticePreference() {
+    int[][] apprenticePreferences = new int[apprentices.size()][partners.size()];
+    for(int[] a : apprenticePreferences) Arrays.fill(a, -1);
+    for(int i = 0; i < apprentices.size(); i++) {
+      List<Preference> preferences = apprentices.get(i).getPreferences();
+      for (int j = 0; j < partners.size(); j++) {
+        String chosenPartnerId = preferences.get(j).getSelectionId();
+        apprenticePreferences[i][j] = getPartnerIndex(partners, partnerService.findOne(chosenPartnerId));
+      }
+    }
+    return apprenticePreferences;
+  }
+
+  public int[][] convertPartnerPreference() {
+    int[][] partnerPreferences = new int[partners.size()][apprentices.size()];
+    for(int[] a : partnerPreferences) {
+      Arrays.fill(a, -1);
+    }
+    for(int i = 0; i < partners.size(); i++) {
+      List<Preference> preferences = partners.get(i).getPreferences();
+      for (int j = 0; j < preferences.size(); j++) {
+        String chosenApprenticeId = preferences.get(j).getSelectionId();
+        partnerPreferences[i][j] = getApprenticeIndex(apprentices, apprenticeService.findById(chosenApprenticeId));
+      }
+    }
+    return partnerPreferences;
+  }
+
+  public Map<String, String> convertMatches(int[] partnerChoices) {
+    Map<String, String> matches = new HashMap<>();
+    for (int i = 0; i < partnerChoices.length; i++) {
+      matches.put(partners.get(i).getId(), apprentices.get(partnerChoices[i]).getId());
+    }
+    return matches;
+  }
+
+
   //////////////////////////////////////////////////////////////////////////////////////////////
-  //do't read this, all bad attempt but can be improved and debugged later maybe?
+  //don't read this, all bad attempt but can be improved and debugged later maybe?
   //first approach
 
   // find all the apprentices for a @partner that ranked that partner at @rank
@@ -259,8 +385,6 @@ public class MatchmakingService {
     System.out.println(stringMap);
     return stringMap;
   }
-
-
 
 }
 

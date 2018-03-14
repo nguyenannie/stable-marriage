@@ -39,70 +39,44 @@ public class AlgorithmService {
 
       for (int i = 0; i < allApprentices.size(); i++) {
 
-
         List<Preference> currentUserPreferenceList = preferenceRepository.findByUser(allApprentices.get(i));
         currentUserPreferenceList.sort(Comparator.comparing(Preference::getRanking));
 
         for (int j = 0; j < currentUserPreferenceList.size(); j++) {
+          Partner thePartner = partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId());
+          Preference thePreference = preferenceRepository.findByUserAndSelectionId(thePartner, allApprentices.get(i).getId());
 
-          if (partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId().equals("")) {
-
+          if (thePartner.getMatchedUserId() == null) {
             createMatch(currentUserPreferenceList, allApprentices, i, j);
-
             changeCounter++;
-
             break;
-
-          } else if(!(preferenceRepository
-                  .findByUserAndSelectionId(
-                          partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()),
-                          allApprentices.get(i).getId()) == null)){
-
+          } else if(thePreference != null){
             int partnerSRankingOfAlreadyRecordedApprenticeMatch = preferenceRepository
-                    .findByUserAndSelectionId(
-                            partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()),
-                            partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId())
-                    .getRanking();
+                    .findByUserAndSelectionId(thePartner, thePartner.getMatchedUserId()).getRanking();
 
             int partnerSRankingOfCurrentApprenticeMatch = preferenceRepository
-                    .findByUserAndSelectionId(
-                            partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()),
-                            allApprentices.get(i).getId())
-                    .getRanking();
+                    .findByUserAndSelectionId(thePartner, allApprentices.get(i).getId()).getRanking();
 
             int apprenticeSRankingOfAlreadyRecordedPartnerMatch = preferenceRepository
-                    .findByUserAndSelectionId(
-                            apprenticeRepository.findById(
-                                    partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId())
-                                            .getMatchedUserId()),
-                            currentUserPreferenceList.get(j).getSelectionId())
+                    .findByUserAndSelectionId(apprenticeRepository.findById(thePartner.getMatchedUserId()),
+                                              currentUserPreferenceList.get(j).getSelectionId())
                     .getRanking();
 
             int apprenticeSRankingOfCurrentPartnerMatch = currentUserPreferenceList.get(j).getRanking();
 
             if (partnerSRankingOfCurrentApprenticeMatch + apprenticeSRankingOfCurrentPartnerMatch <
                     partnerSRankingOfAlreadyRecordedApprenticeMatch + apprenticeSRankingOfAlreadyRecordedPartnerMatch) {
-
               deleteAlreadyRecordedApprenticeMatch(currentUserPreferenceList, j);
-
               createMatch(currentUserPreferenceList, allApprentices, i, j);
-
               changeCounter++;
-
               break;
             } else if ((partnerSRankingOfCurrentApprenticeMatch + apprenticeSRankingOfCurrentPartnerMatch) ==
                     (partnerSRankingOfAlreadyRecordedApprenticeMatch + apprenticeSRankingOfAlreadyRecordedPartnerMatch) &&
                     !(allApprentices.get(i).getId()).equals(
-                            apprenticeRepository.findById(
-                                    partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId())
-                                            .getMatchedUserId()).getId())) {
-
+                            apprenticeRepository.findById(thePartner.getMatchedUserId()).getId())) {
               if (apprenticeSRankingOfCurrentPartnerMatch < apprenticeSRankingOfAlreadyRecordedPartnerMatch) {
-
                 deleteAlreadyRecordedApprenticeMatch(currentUserPreferenceList, j);
-
                 createMatch(currentUserPreferenceList, allApprentices, i, j);
-
               }
             }
           }
@@ -129,22 +103,22 @@ public class AlgorithmService {
   }
 
   public void createMatch(List<Preference> currentUserSPreferenceList, List<User> allApprentices, int i, int j) {
+    String partnerId = currentUserSPreferenceList.get(j).getSelectionId();
+    String apprenticeId = allApprentices.get(i).getId();
+    Partner thePartner = partnerRepository.findById(partnerId);
 
-    partnerRepository.findById(currentUserSPreferenceList.get(j).getSelectionId())
-            .setMatchedUserId(allApprentices.get(i).getId());
-    partnerRepository.save(partnerRepository.findById(currentUserSPreferenceList.get(j).getSelectionId()));
+    thePartner.setMatchedUserId(apprenticeId);
+    partnerRepository.save(thePartner);
 
-    allApprentices.get(i)
-            .setMatchedUserId(partnerRepository.findById(currentUserSPreferenceList.get(j).getSelectionId()).getId());
+    allApprentices.get(i).setMatchedUserId(thePartner.getId());
     apprenticeRepository.save((Apprentice)allApprentices.get(i));
   }
 
   public void deleteAlreadyRecordedApprenticeMatch(List<Preference> currentUserPreferenceList, int j) {
-    apprenticeRepository.findById(
-            partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId())
-            .setMatchedUserId(null);
-    apprenticeRepository.save(apprenticeRepository.findById(
-            partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId()).getMatchedUserId()));
+    Partner partnerNeededToBeFound = partnerRepository.findById(currentUserPreferenceList.get(j).getSelectionId());
+    Apprentice apprenticeNeededToBeFound = apprenticeRepository.findById(partnerNeededToBeFound.getMatchedUserId());
+    apprenticeNeededToBeFound.setMatchedUserId(null);
+    apprenticeRepository.save(apprenticeNeededToBeFound);
   }
 
 }

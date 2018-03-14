@@ -27,10 +27,11 @@ repositories {
 }
 
 flyway {
-	url = 'jdbc:mysql://localhost/matchmakinglocal?useSSL=false'
-	user = 'root'
+	url = 'jdbc:postgresql://localhost:5432/matchmaking'
+	user = 'annie'
 	password = '12345'
-	driver='com.mysql.jdbc.Driver'
+//	baselineOnMigrate = true
+	schemas = ['public']
 }
 
 dependencies {
