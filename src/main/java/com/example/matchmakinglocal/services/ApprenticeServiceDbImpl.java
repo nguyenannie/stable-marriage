@@ -20,7 +20,7 @@ public class ApprenticeServiceDbImpl implements ApprenticeService {
     }
 
     @Override
-    public Apprentice findById(String id) {
+    public Apprentice findOne(String id) {
         return apprenticeRepository.findOne(id);
     }
 

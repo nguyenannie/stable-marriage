@@ -63,12 +63,8 @@ public class MainController {
   }
 
   @GetMapping("/getMatches")
-  public Map getMatches() {
-    int[][] apprenticePreferences = matchmakingService.convertApprenticePreference();
-    int[][] partnerPreferences = matchmakingService.convertPartnerPreference();
-    int[] partnerChoices = matchmakingService.secondApproachAdjustment(apprenticePreferences, partnerPreferences,
-            apprenticePreferences.length, partnerPreferences.length);
-    return matchmakingService.convertMatches(partnerChoices);
+  public Map<String, String> getMatches() {
+    return matchmakingService.returnMatches();
   }
 
 }

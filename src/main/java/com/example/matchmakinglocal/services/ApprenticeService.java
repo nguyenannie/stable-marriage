@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface ApprenticeService {
   void save(Apprentice apprentice);
-  Apprentice findById(String id);
+  Apprentice findOne(String id);
   List retrieveApprentices(Apprentice filter);
   List<Apprentice> findAll();
 //    List<Apprentice> findByCohortClassAndEmail(String cohortClass, String email);
