@@ -6,104 +6,114 @@ import javax.persistence.*;
 @Table(name = "apprentice")
 public class Apprentice extends User {
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-    @Column(nullable = false)
-    private String cohort;
-    @Column(name = "cohort_class", nullable = false)
-    private String cohortClass;
-    @Column(name = "is_Hungarian_Speaker")
-    private boolean isHungarianSpeaker;
-    @Column(name = "slack_channel_id")
-    private String slackChannelId;
+  @Column(name = "first_name", nullable = false)
+  private String firstName;
+  @Column(name = "last_name", nullable = false)
+  private String lastName;
+  @Column(nullable = false)
+  private String cohort;
+  @Column(name = "cohort_class", nullable = false)
+  private String cohortClass;
+  @Column(name = "is_Hungarian_Speaker")
+  private boolean isHungarianSpeaker;
+  @Column(name = "slack_channel_id")
+  private String slackChannelId;
 
-    public Apprentice() {
-        super();
-    }
+  public Apprentice() {
+      super();
+  }
 
-    public Apprentice(String email) {
-        super(email);
-    }
+  public Apprentice(String email) {
+      super(email);
+  }
 
-    public Apprentice(String email, String phoneNumber) {
-        super(email, phoneNumber);
-    }
+  public Apprentice(String email, String phoneNumber) {
+      super(email, phoneNumber);
+  }
 
-    public String getFirstName() {
-        return firstName;
-    }
+  public Apprentice(String firstName, String lastName, String cohort, String cohortClass, boolean isHungarianSpeaker) {
+    super();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.cohort = cohort;
+    this.cohortClass = cohortClass;
+    this.isHungarianSpeaker = isHungarianSpeaker;
+  }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public String getFirstName() {
+      return firstName;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public void setFirstName(String firstName) {
+      this.firstName = firstName;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public String getLastName() {
+      return lastName;
+  }
 
-    public String getCohort() {
-        return cohort;
-    }
+  public void setLastName(String lastName) {
+      this.lastName = lastName;
+  }
 
-    public void setCohort(String cohort) {
-        this.cohort = cohort;
-    }
+  public String getCohort() {
+      return cohort;
+  }
 
-    public boolean isHungarianSpeaker() {
-        return isHungarianSpeaker;
-    }
+  public void setCohort(String cohort) {
+      this.cohort = cohort;
+  }
 
-    public void setHungarianSpeaker(boolean hungarianSpeaker) {
-        isHungarianSpeaker = hungarianSpeaker;
-    }
+  public boolean isHungarianSpeaker() {
+      return isHungarianSpeaker;
+  }
 
-    public String getCohortClass() {
-        return cohortClass;
-    }
+  public void setHungarianSpeaker(boolean hungarianSpeaker) {
+      isHungarianSpeaker = hungarianSpeaker;
+  }
 
-    public void setCohortClass(String cohortClass) {
-        this.cohortClass = cohortClass;
-    }
+  public String getCohortClass() {
+      return cohortClass;
+  }
 
-    @Override
-    public String toString() {
-        return  "Apprentice{ id : " + this.id
-                + ", First name : " + this.firstName
-                + ", Last name : " + this.lastName
-                + ", Email : " + this.email
-                + ", Phone Number : " + this.phoneNumber
-                + ", Cohort : " + this.cohort
-                + ", Cohort class : " + this.cohortClass
-                + ", Is Hungarian Speaker : " + this.isHungarianSpeaker
-                + " }";
-    }
+  public void setCohortClass(String cohortClass) {
+      this.cohortClass = cohortClass;
+  }
 
-    public String getSlackChannelId() {
-        return slackChannelId;
-    }
+  @Override
+  public String toString() {
+      return  "Apprentice{ id : " + this.id
+              + ", First name : " + this.firstName
+              + ", Last name : " + this.lastName
+              + ", Email : " + this.email
+              + ", Phone Number : " + this.phoneNumber
+              + ", Cohort : " + this.cohort
+              + ", Cohort class : " + this.cohortClass
+              + ", Is Hungarian Speaker : " + this.isHungarianSpeaker
+              + " }";
+  }
 
-    public void setSlackChannelId(String slackChannelId) {
-        this.slackChannelId = slackChannelId;
-    }
+  public String getSlackChannelId() {
+      return slackChannelId;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
+  public void setSlackChannelId(String slackChannelId) {
+      this.slackChannelId = slackChannelId;
+  }
 
-        if (!(obj instanceof Apprentice)) {
-            return false;
-        }
+  @Override
+  public boolean equals(Object obj) {
+      if (obj == this) {
+          return true;
+      }
 
-        Apprentice compareApprentice = (Apprentice) obj;
+      if (!(obj instanceof Apprentice)) {
+          return false;
+      }
 
-        return compareApprentice.id.equals(this.id);
-    }
+      Apprentice compareApprentice = (Apprentice) obj;
+
+      return compareApprentice.id.equals(this.id);
+  }
+
 }

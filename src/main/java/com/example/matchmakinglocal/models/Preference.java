@@ -6,47 +6,58 @@ import javax.persistence.*;
 @Table(name = "preference")
 public class Preference {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String selectionId;
-    private int ranking;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+  private String selectionId;
+  private int ranking;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-    public Preference() {
-    }
+  public Preference() {
+  }
 
-    public int getRanking() {
-        return ranking;
-    }
+  public Preference(int ranking, String selectionId, User user) {
+    this.ranking = ranking;
+    this.selectionId = selectionId;
+    this.user = user;
+  }
 
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
-    }
+  public Preference(int ranking, String selectionId) {
+    this.ranking = ranking;
+    this.selectionId = selectionId;
+  }
 
-    public User getUser() {
-        return user;
-    }
+  public int getRanking() {
+      return ranking;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setRanking(int ranking) {
+      this.ranking = ranking;
+  }
 
-    public long getId() {
-        return id;
-    }
+  public User getUser() {
+      return user;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public void setUser(User user) {
+      this.user = user;
+  }
 
-    public String getSelectionId() {
-        return selectionId;
-    }
+  public long getId() {
+      return id;
+  }
 
-    public void setSelectionId(String selectionId) {
+  public void setId(long id) {
+      this.id = id;
+  }
+
+  public String getSelectionId() {
+      return selectionId;
+  }
+
+  public void setSelectionId(String selectionId) {
         this.selectionId = selectionId;
     }
 }

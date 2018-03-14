@@ -22,6 +22,8 @@ public class MainController {
   private final TestApiService testApiService;
   private final MatchmakingService matchmakingService;
   private final AlgorithmService algorithmService;
+  @Autowired
+  MatchmakingServiceDb matchmakingServiceDb;
 
   @Autowired
   public MainController(PreferenceService preferenceService, ApprenticeService apprenticeService, PartnerService partnerService, TestApiService testApiService, MatchmakingService matchmakingService, AlgorithmService algorithmService) {
@@ -63,9 +65,9 @@ public class MainController {
   }
 
   @GetMapping("/getMatches")
-  public Map<String, String> getMatches() {
+  public Map getMatches() {
     return matchmakingService.returnMatches();
+//    return matchmakingServiceDb.secondApproach(apprenticeService.findAll(), partnerService.findAll());
   }
 
 }
-

@@ -11,16 +11,17 @@ public class Algorithm {
 
   }
 
-  public Algorithm(int[][] apprenticePreferences, int[][] partnerPreferences, int apprenticeSize, int partnerSize) {
+  public Algorithm(int[][] apprenticePreferences, int[][] partnerPreferences) {
     this.apprenticePreferences = apprenticePreferences;
     this.partnerPreferences = partnerPreferences;
-    this.apprenticeSize = apprenticeSize;
-    this.partnerSize = partnerSize;
+    this.apprenticeSize = apprenticePreferences.length;
+    this.partnerSize = partnerPreferences.length;
   }
 
   public int[] calculateMatches() {
     boolean changed;
     boolean[] pairedPartners = new boolean[partnerSize];
+
     int[] partnerChoices = new int[partnerSize];
 
     do {
@@ -87,7 +88,7 @@ public class Algorithm {
         return i + 1;
       }
     }
-    return Integer.MAX_VALUE;
+    return apprenticeSize + 100;
   }
 
   private int findRankOfPartnerInApprenticePreference(int apprentice, int partner) {
@@ -97,7 +98,7 @@ public class Algorithm {
         return i + 1;
       }
     }
-    return Integer.MAX_VALUE;
+    return partnerSize + 100;
   }
 
 }

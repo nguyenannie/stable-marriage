@@ -5,11 +5,13 @@ import com.example.matchmakinglocal.models.Partner;
 import com.example.matchmakinglocal.models.Preference;
 import com.example.matchmakinglocal.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Service
 public class MatchmakingServiceDb {
 
   private final ApprenticeService apprenticeService;
