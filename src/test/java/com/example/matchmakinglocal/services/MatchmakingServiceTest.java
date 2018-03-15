@@ -21,10 +21,9 @@ public class MatchmakingServiceTest {
 
   @Mock
   ApprenticeRepository apprenticeRepositoryMock;
+
   @Mock
   PartnerRepository partnerRepositoryMock;
-//  @Mock
-//  PreferenceRepository preferenceRepositoryMock;
 
   @InjectMocks
   MatchmakingService matchmakingService;
@@ -61,57 +60,18 @@ public class MatchmakingServiceTest {
     partners.get(1).setPreferences(Arrays.asList(new Preference(1, apprentices.get(2).getId()),new Preference(2, apprentices.get(0).getId()), new Preference(3, apprentices.get(3).getId())));
     partners.get(2).setPreferences(Arrays.asList(new Preference(1, apprentices.get(2).getId()),new Preference(2, apprentices.get(3).getId()), new Preference(3, apprentices.get(0).getId())));
 
-//    List<Preference> preferences = new ArrayList<>();
-//    preferences.add(new Preference(1, partners.get(1).getId(), apprentices.get(0)));
-//    preferences.add(new Preference(2, partners.get(0).getId(), apprentices.get(0)));
-//    preferences.add(new Preference(3, partners.get(2).getId(), apprentices.get(0)));
-//    preferences.add(new Preference(1, partners.get(0).getId(), apprentices.get(1)));
-//    preferences.add(new Preference(2, partners.get(1).getId(), apprentices.get(1)));
-//    preferences.add(new Preference(3, partners.get(2).getId(), apprentices.get(1)));
-//    preferences.add(new Preference(1, partners.get(1).getId(), apprentices.get(2)));
-//    preferences.add(new Preference(2, partners.get(0).getId(), apprentices.get(2)));
-//    preferences.add(new Preference(3, partners.get(2).getId(), apprentices.get(2)));
-//    preferences.add(new Preference(1, partners.get(2).getId(), apprentices.get(3)));
-//    preferences.add(new Preference(2, partners.get(1).getId(), apprentices.get(3)));
-//    preferences.add(new Preference(3, partners.get(0).getId(), apprentices.get(3)));
-//    preferences.add(new Preference(1, partners.get(1).getId(), apprentices.get(4)));
-//    preferences.add(new Preference(2, partners.get(2).getId(), apprentices.get(4)));
-//    preferences.add(new Preference(3, partners.get(0).getId(), apprentices.get(4)));
-//    preferences.add(new Preference(1, apprentices.get(0).getId(), partners.get(0)));
-//    preferences.add(new Preference(2, apprentices.get(1).getId(), partners.get(0)));
-//    preferences.add(new Preference(3, apprentices.get(4).getId(), partners.get(0)));
-//    preferences.add(new Preference(4, apprentices.get(2).getId(), partners.get(0)));
-//    preferences.add(new Preference(5, apprentices.get(3).getId(), partners.get(0)));
-//    preferences.add(new Preference(1, apprentices.get(2).getId(), partners.get(1)));
-//    preferences.add(new Preference(2, apprentices.get(0).getId(), partners.get(1)));
-//    preferences.add(new Preference(3, apprentices.get(3).getId(), partners.get(1)));
-//    preferences.add(new Preference(4, null, partners.get(1)));
-//    preferences.add(new Preference(5, null, partners.get(1)));
-//    preferences.add(new Preference(1, apprentices.get(2).getId(), partners.get(2)));
-//    preferences.add(new Preference(2, apprentices.get(3).getId(), partners.get(2)));
-//    preferences.add(new Preference(3, apprentices.get(0).getId(), partners.get(2)));
-//    preferences.add(new Preference(4, null, partners.get(2)));
-//    preferences.add(new Preference(5, null, partners.get(2)));
-
     doReturn(apprentices).when(apprenticeRepositoryMock).findAll();
     doReturn(partners).when(partnerRepositoryMock).findAll();
-//    doReturn(preferences).when(preferenceRepositoryMock).findAll();
+
     doReturn(apprentices.get(0)).when(apprenticeRepositoryMock).findOne(apprentices.get(0).getId());
     doReturn(apprentices.get(1)).when(apprenticeRepositoryMock).findOne(apprentices.get(1).getId());
     doReturn(apprentices.get(2)).when(apprenticeRepositoryMock).findOne(apprentices.get(2).getId());
     doReturn(apprentices.get(3)).when(apprenticeRepositoryMock).findOne(apprentices.get(3).getId());
     doReturn(apprentices.get(4)).when(apprenticeRepositoryMock).findOne(apprentices.get(4).getId());
+
     doReturn(partners.get(0)).when(partnerRepositoryMock).findOne(partners.get(0).getId());
     doReturn(partners.get(1)).when(partnerRepositoryMock).findOne(partners.get(1).getId());
     doReturn(partners.get(2)).when(partnerRepositoryMock).findOne(partners.get(2).getId());
-
-//    matchmakingService.apprentices = apprentices;
-//    matchmakingService.partners = partners;
-
-//    algorithm = new Algorithm(matchmakingService.convertApprenticePreference(),
-//            matchmakingService.convertPartnerPreference());
-
-//    matchmakingService.returnMatches();
 
     HashMap<String, String> results = new HashMap<>();
     results.put(partners.get(0).getId(), apprentices.get(1).getId());
