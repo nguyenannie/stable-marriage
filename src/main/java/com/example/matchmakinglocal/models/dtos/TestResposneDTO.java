@@ -1,6 +1,7 @@
-package com.example.matchmakinglocal.models;
+package com.example.matchmakinglocal.models.dtos;
 
 public class TestResposneDTO {
+
   private String message;
   private int luckyNumber;
   private boolean rightOrWrong;
@@ -38,4 +39,5 @@ public class TestResposneDTO {
   public void setRightOrWrong(boolean rightOrWrong) {
     this.rightOrWrong = rightOrWrong;
   }
+
 }

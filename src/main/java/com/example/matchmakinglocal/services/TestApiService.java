@@ -1,19 +1,11 @@
 package com.example.matchmakinglocal.services;
 
-import com.example.matchmakinglocal.models.Apprentice;
-import com.example.matchmakinglocal.models.ApprenticeDTO;
-import com.example.matchmakinglocal.models.ListApprenticeDTO;
-import com.example.matchmakinglocal.models.TestResposneDTO;
+import com.example.matchmakinglocal.models.entities.Apprentice;
 import com.example.matchmakinglocal.repositories.TestApi;
-import okhttp3.ResponseBody;
 import org.springframework.stereotype.Service;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

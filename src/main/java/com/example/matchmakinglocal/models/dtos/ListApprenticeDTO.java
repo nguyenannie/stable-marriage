@@ -1,4 +1,6 @@
-package com.example.matchmakinglocal.models;
+package com.example.matchmakinglocal.models.dtos;
+
+import com.example.matchmakinglocal.models.dtos.ApprenticeDTO;
 
 import java.util.List;
 

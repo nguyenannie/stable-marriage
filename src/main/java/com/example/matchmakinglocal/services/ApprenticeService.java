@@ -1,6 +1,6 @@
 package com.example.matchmakinglocal.services;
 
-import com.example.matchmakinglocal.models.Apprentice;
+import com.example.matchmakinglocal.models.entities.Apprentice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,7 @@
-package com.example.matchmakinglocal.models;
+package com.example.matchmakinglocal.models.entities;
+
+import com.example.matchmakinglocal.models.entities.Preference;
+import com.example.matchmakinglocal.models.entities.Status;
 
 import javax.persistence.*;
 import java.util.List;
@@ -78,4 +81,5 @@ public abstract class User {
   public void setMatchedUserId(String matchedUserId) {
     this.matchedUserId = matchedUserId;
   }
+
 }

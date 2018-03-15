@@ -1,9 +1,9 @@
 package com.example.matchmakinglocal.services;
 
-import com.example.matchmakinglocal.models.Apprentice;
-import com.example.matchmakinglocal.models.Partner;
-import com.example.matchmakinglocal.models.Preference;
-import com.example.matchmakinglocal.models.User;
+import com.example.matchmakinglocal.models.entities.Apprentice;
+import com.example.matchmakinglocal.models.entities.Partner;
+import com.example.matchmakinglocal.models.entities.Preference;
+import com.example.matchmakinglocal.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

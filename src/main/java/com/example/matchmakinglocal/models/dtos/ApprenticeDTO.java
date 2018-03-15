@@ -1,4 +1,4 @@
-package com.example.matchmakinglocal.models;
+package com.example.matchmakinglocal.models.dtos;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -22,8 +22,6 @@ public class ApprenticeDTO {
   protected String email;
   @SerializedName("phoneNumber")
   protected String phoneNumber;
-//  @SerializedName("isActiveUser")
-//  protected boolean isActiveUser;
 
   public ApprenticeDTO() {
 

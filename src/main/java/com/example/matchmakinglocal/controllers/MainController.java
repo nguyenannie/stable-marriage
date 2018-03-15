@@ -1,6 +1,7 @@
 package com.example.matchmakinglocal.controllers;
 
-import com.example.matchmakinglocal.models.*;
+import com.example.matchmakinglocal.models.entities.Apprentice;
+import com.example.matchmakinglocal.models.entities.Preference;
 import com.example.matchmakinglocal.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,17 +22,20 @@ public class MainController {
   private final TestApiService testApiService;
   private final MatchmakingService matchmakingService;
   private final AlgorithmService algorithmService;
-  @Autowired
-  MatchmakingServiceDb matchmakingServiceDb;
+  private final MatchmakingServiceDb matchmakingServiceDb;
 
   @Autowired
-  public MainController(PreferenceService preferenceService, ApprenticeService apprenticeService, PartnerService partnerService, TestApiService testApiService, MatchmakingService matchmakingService, AlgorithmService algorithmService) {
+  public MainController(PreferenceService preferenceService, ApprenticeService apprenticeService,
+                        PartnerService partnerService, TestApiService testApiService,
+                        MatchmakingService matchmakingService, AlgorithmService algorithmService,
+                        MatchmakingServiceDb matchmakingServiceDb) {
     this.preferenceService = preferenceService;
     this.apprenticeService = apprenticeService;
     this.partnerService = partnerService;
     this.testApiService = testApiService;
     this.matchmakingService = matchmakingService;
     this.algorithmService = algorithmService;
+    this.matchmakingServiceDb = matchmakingServiceDb;
   }
 
   @GetMapping("/user")

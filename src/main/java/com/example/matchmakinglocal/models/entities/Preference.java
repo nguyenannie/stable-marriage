@@ -1,4 +1,4 @@
-package com.example.matchmakinglocal.models;
+package com.example.matchmakinglocal.models.entities;
 
 import javax.persistence.*;
 
@@ -60,5 +60,6 @@ public class Preference {
   public void setSelectionId(String selectionId) {
         this.selectionId = selectionId;
     }
+
 }
 

@@ -1,11 +1,10 @@
 package com.example.matchmakinglocal.services;
 
-import com.example.matchmakinglocal.models.Apprentice;
-import com.example.matchmakinglocal.models.Partner;
-import com.example.matchmakinglocal.models.Preference;
+import com.example.matchmakinglocal.models.entities.Apprentice;
+import com.example.matchmakinglocal.models.entities.Partner;
+import com.example.matchmakinglocal.models.entities.Preference;
 import com.example.matchmakinglocal.repositories.ApprenticeRepository;
 import com.example.matchmakinglocal.repositories.PartnerRepository;
-import com.example.matchmakinglocal.repositories.PreferenceRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

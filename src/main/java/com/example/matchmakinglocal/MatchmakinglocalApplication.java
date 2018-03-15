@@ -1,10 +1,6 @@
 package com.example.matchmakinglocal;
 
-import com.example.matchmakinglocal.models.Apprentice;
-import com.example.matchmakinglocal.models.Partner;
-import com.example.matchmakinglocal.models.Preference;
 import com.example.matchmakinglocal.services.ApprenticeService;
-import com.example.matchmakinglocal.services.MatchMakingAlgorithm;
 import com.example.matchmakinglocal.services.PartnerService;
 import com.example.matchmakinglocal.services.PreferenceService;
 import org.springframework.boot.CommandLineRunner;

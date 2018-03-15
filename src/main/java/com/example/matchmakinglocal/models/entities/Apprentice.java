@@ -1,4 +1,4 @@
-package com.example.matchmakinglocal.models;
+package com.example.matchmakinglocal.models.entities;
 
 import javax.persistence.*;
 
@@ -82,15 +82,15 @@ public class Apprentice extends User {
 
   @Override
   public String toString() {
-      return  "Apprentice{ id : " + this.id
-              + ", First name : " + this.firstName
-              + ", Last name : " + this.lastName
-              + ", Email : " + this.email
-              + ", Phone Number : " + this.phoneNumber
-              + ", Cohort : " + this.cohort
-              + ", Cohort class : " + this.cohortClass
-              + ", Is Hungarian Speaker : " + this.isHungarianSpeaker
-              + " }";
+    return  "Apprentice{ id : " + this.id
+            + ", First name : " + this.firstName
+            + ", Last name : " + this.lastName
+            + ", Email : " + this.email
+            + ", Phone Number : " + this.phoneNumber
+            + ", Cohort : " + this.cohort
+            + ", Cohort class : " + this.cohortClass
+            + ", Is Hungarian Speaker : " + this.isHungarianSpeaker
+            + " }";
   }
 
   public String getSlackChannelId() {
@@ -103,17 +103,17 @@ public class Apprentice extends User {
 
   @Override
   public boolean equals(Object obj) {
-      if (obj == this) {
-          return true;
-      }
+    if (obj == this) {
+        return true;
+    }
 
-      if (!(obj instanceof Apprentice)) {
-          return false;
-      }
+    if (!(obj instanceof Apprentice)) {
+        return false;
+    }
 
-      Apprentice compareApprentice = (Apprentice) obj;
+    Apprentice compareApprentice = (Apprentice) obj;
 
-      return compareApprentice.id.equals(this.id);
+    return compareApprentice.id.equals(this.id);
   }
 
 }

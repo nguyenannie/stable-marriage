@@ -1,6 +1,6 @@
 package com.example.matchmakinglocal.services;
 
-import com.example.matchmakinglocal.models.Preference;
+import com.example.matchmakinglocal.models.entities.Preference;
 import com.example.matchmakinglocal.repositories.PreferenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
