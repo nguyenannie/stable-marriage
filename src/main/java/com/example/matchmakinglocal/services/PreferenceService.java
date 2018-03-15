@@ -7,7 +7,9 @@ import java.util.List;
 
 @Service
 public interface PreferenceService {
-    void save(Preference preference);
-    List<Preference> findAllByUserId(String id);
+
+  void save(Preference preference);
+  List<Preference> findAllByUserId(String id);
+
 }
 

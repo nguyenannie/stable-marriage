@@ -9,16 +9,17 @@ import java.util.List;
 
 @Service
 public class PreferenceServiceDbImpl implements PreferenceService {
-    @Autowired
-    PreferenceRepository preferenceRepository;
-    @Override
-    public void save(Preference preference) {
-        preferenceRepository.save(preference);
-    }
 
-    @Override
-    public List<Preference> findAllByUserId(String id) {
-        return preferenceRepository.findAllByUserId(id);
-    }
+  @Autowired
+  PreferenceRepository preferenceRepository;
+  @Override
+  public void save(Preference preference) {
+      preferenceRepository.save(preference);
+  }
+  @Override
+  public List<Preference> findAllByUserId(String id) {
+      return preferenceRepository.findAllByUserId(id);
+  }
+
 }
 

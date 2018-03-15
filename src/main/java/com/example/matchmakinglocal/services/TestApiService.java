@@ -46,26 +46,3 @@ public class TestApiService {
 
 }
 
-//    .enqueue(new Callback<List<ApprenticeDTO>>() {
-//      @Override
-//      public void onResponse(Call<List<ApprenticeDTO>> call, Response<List<ApprenticeDTO>> response) {
-//        apprenticeDTOS.add(new ApprenticeDTO("annie but success"));
-//        t = 2;
-//        System.out.println("annie but success");
-////        for(ApprenticeDTO apprentice: response.body()) {
-////          apprenticeDTOS.add(apprentice);
-////          System.out.println(apprentice.toString());
-////        }
-//      }
-//
-//      @Override
-//      public void onFailure(Call<List<ApprenticeDTO>> call, Throwable t) {
-//        apprenticeDTOS.add(new ApprenticeDTO("kris but failed"));
-//        System.out.println("kris but failed");
-////        System.out.println(t.getMessage());
-//      }
-//    });
-//    System.out.println("T " + t);
-//
-//    return apprenticeDTOS;
-

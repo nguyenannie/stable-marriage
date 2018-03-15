@@ -7,8 +7,10 @@ import java.util.List;
 
 @Service
 public interface PartnerService {
-    void save(Partner partner);
-    List<Partner> findAll();
-    List<String> getAllEmails();
-    Partner findOne(String id);
+
+  void save(Partner partner);
+  List<Partner> findAll();
+  List<String> getAllEmails();
+  Partner findOne(String id);
+
 }

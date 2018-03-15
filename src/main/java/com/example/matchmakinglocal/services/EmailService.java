@@ -10,10 +10,15 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
-  @Autowired PartnerService partnerService;
+  final PartnerService partnerService;
 
 
   private String apiKey = "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";
+
+  @Autowired
+  public EmailService(PartnerService partnerService) {
+    this.partnerService = partnerService;
+  }
 
   public void sendEmail() {
 
