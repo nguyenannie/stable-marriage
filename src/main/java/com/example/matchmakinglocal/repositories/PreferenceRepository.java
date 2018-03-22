@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PreferenceRepository extends CrudRepository<Preference, String> {
+public interface PreferenceRepository extends CrudRepository<Preference, Long> {
 
   List<Preference> findAllByUserId(String id);
   List<Preference> findAll();

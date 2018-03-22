@@ -10,7 +10,9 @@ import java.util.List;
 public interface PartnerRepository extends CrudRepository<Partner, String> {
 
   List<Partner> findAll();
-  Partner findById(String id);
+  Partner findByCompanyNameContainingIgnoreCase(String companyName);
+  Partner findByPhoneNumber(String phoneNumber);
+  Partner findByEmailContaining(String email);
 
 }
 

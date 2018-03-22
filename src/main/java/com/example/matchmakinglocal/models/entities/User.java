@@ -1,7 +1,6 @@
 package com.example.matchmakinglocal.models.entities;
 
-import com.example.matchmakinglocal.models.entities.Preference;
-import com.example.matchmakinglocal.models.entities.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +15,7 @@ public abstract class User {
   @Column(nullable = false)
   protected String email;
   protected String phoneNumber;
+  @JsonIgnore
   protected String matchedUserId;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   protected List<Preference> preferences;
@@ -36,6 +36,14 @@ public abstract class User {
       this.id = UUID.randomUUID().toString();
       this.email = email;
       this.phoneNumber = phoneNumber;
+  }
+
+  public User(String email, String phoneNumber, Status status, String matchedUserId) {
+    this.id = UUID.randomUUID().toString();
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.status = status;
+    this.matchedUserId = matchedUserId;
   }
 
   public String getId() {

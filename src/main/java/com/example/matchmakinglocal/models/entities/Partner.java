@@ -28,6 +28,11 @@ public class Partner extends User {
     this.companyName = companyName;
   }
 
+  public Partner(String email, String phoneNumber, Status status, String matchedUserId, String companyName) {
+    super(email, phoneNumber, status, matchedUserId);
+    this.companyName = companyName;
+  }
+
   public String getCompanyName() {
       return companyName;
   }

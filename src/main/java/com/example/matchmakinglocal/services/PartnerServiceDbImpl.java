@@ -11,36 +11,56 @@ import java.util.List;
 @Service
 public class PartnerServiceDbImpl implements PartnerService {
 
-    final
-    PartnerRepository partnerRepository;
+  private final PartnerRepository partnerRepository;
 
-    @Autowired
-    public PartnerServiceDbImpl(PartnerRepository partnerRepository) {
-        this.partnerRepository = partnerRepository;
-    }
+  @Autowired
+  public PartnerServiceDbImpl(PartnerRepository partnerRepository) {
+      this.partnerRepository = partnerRepository;
+  }
 
-    @Override
-    public void save(Partner partner) {
-        partnerRepository.save(partner);
-    }
+  @Override
+  public void save(Partner partner) {
+      partnerRepository.save(partner);
+  }
 
-    @Override
-    public List<Partner> findAll() {
-        return partnerRepository.findAll();
-    }
+  @Override
+  public List<Partner> findAll() {
+      return partnerRepository.findAll();
+  }
 
-    public List<String> getAllEmails() {
+  public List<String> getAllEmails() {
 
-        List<String> emails = new ArrayList<>();
-        for(Partner partner : findAll()) {
-            emails.add(partner.getEmail());
-        }
+      List<String> emails = new ArrayList<>();
+      for(Partner partner : findAll()) {
+          emails.add(partner.getEmail());
+      }
 
-        return emails;
-    }
+      return emails;
+  }
 
-    @Override
-    public Partner findOne(String id) {
-        return partnerRepository.findOne(id);
-    }
+  @Override
+  public Partner findOne(String id) {
+      return partnerRepository.findOne(id);
+  }
+
+  @Override
+  public Partner findByEmail(String email) {
+      return partnerRepository.findByEmailContaining(email);
+  }
+
+  @Override
+  public Partner findByPhoneNumber(String phoneNumber) {
+      return partnerRepository.findByPhoneNumber(phoneNumber);
+  }
+
+  @Override
+  public Partner findByCompanyName(String companyName) {
+    return partnerRepository.findByCompanyNameContainingIgnoreCase(companyName);
+  }
+
+  @Override
+  public String findCompanyNameById(String id) {
+    return partnerRepository.findOne(id).getCompanyName();
+  }
+
 }

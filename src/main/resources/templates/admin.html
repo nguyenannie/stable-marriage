@@ -1,22 +1,107 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Main Page</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width" />
-    <base href="/" />
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <title>Change Password #</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8"/>
 </head>
 <body>
     <h1 th:text="'Hello ' + ${principal.userAuthentication.details.name}"></h1>
     <p th:text="'You have logged in with the email: ' + ${principal.userAuthentication.details.email}"></p>
 
-    <form action="#" th:action="@{/mail/send}" method="post">
-        <button type="submit" class="btn btn-warning">Send Notification</button>
+    <!--<form action="#" th:action="@{/mail/send}" method="post">-->
+        <!--<button type="submit" class="btn btn-warning">Send Notification</button>-->
+    <!--</form>-->
+
+    <form action="#" th:action="@{/radiobuttoncheck}" method="post" th:object="${searchForm}">
+        <div>
+            <label class="radio-inline">
+                <input type="radio" th:field="*{radioButton}" value="apprentice"/> Apprentice
+            </label>
+            <label class="radio-inline">
+                <input type="radio" th:field="*{radioButton}" value="partner" /> Partner
+            </label>
+            <label class="radio-inline">
+                <input type="radio" th:field="*{radioButton}" value="cohort" /> Cohort
+            </label>
+        </div>
+        <div>
+            <label class="checkbox-inline">
+                <input type="checkbox" th:field="*{checkbox}" value="active" checked="checked"/> Active
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" th:field="*{checkbox}" value="inactive"/> Inactive
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" th:field="*{checkbox}" value="headhunting"/> Head hunting
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" th:field="*{checkbox}" value="goldpartner"/> Gold Partner
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="text" th:field="*{checkbox}"/>
+            </label>
+            <button type="submit" class="btn btn-warning">Search</button>
+        </div>
     </form>
+
+    <div th:if="${filter} == 'apprentice'">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Tick Box</td>
+                    <td>Sent Indicator</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="result : ${results}">
+                    <td th:text="${result.firstName} + ' ' + ${result.lastName}"></td>
+                    <td>Tick box</td>
+                    <td>Sent Indicator</td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+    <div th:if="${filter} == 'partner'">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Company Name</td>
+                <td>Tick box</td>
+                <td>Sent Indicator</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="result : ${results}">
+                <td th:text="${result.companyName}"></td>
+                <td>Tick box</td>
+                <td>Sent Indicator</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${filter} == 'cohort'">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Cohort Name</td>
+                <td>Tick box</td>
+                <td>Sent Indicator</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="result : ${results}">
+                <td th:text="${result.cohortName}"></td>
+                <td>Tick box</td>
+                <td>Sent Indicator</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>

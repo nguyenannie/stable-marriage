@@ -45,11 +45,13 @@ dependencies {
 	compile('org.webjars:js-cookie:2.1.0')
 	compile('org.webjars:jquery:2.1.1')
 	compile('org.webjars:bootstrap:3.2.0')
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.6.0'
 	compile('org.webjars:webjars-locator')
 	compile 'com.squareup.retrofit2:retrofit:2.3.0'
 	runtime('org.postgresql:postgresql')
 	compile('org.flywaydb:flyway-core:5.0.7')
 	compile('com.squareup.retrofit2:converter-jackson:2.3.0')
 	compile 'com.sendgrid:sendgrid-java:4.0.1'
+//	testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.0.0.RELEASE'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

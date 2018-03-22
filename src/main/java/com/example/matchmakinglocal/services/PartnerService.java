@@ -12,5 +12,9 @@ public interface PartnerService {
   List<Partner> findAll();
   List<String> getAllEmails();
   Partner findOne(String id);
+  Partner findByEmail(String email);
+  Partner findByPhoneNumber(String phoneNumber);
+  Partner findByCompanyName(String companyName);
+  String findCompanyNameById(String id);
 
 }

@@ -10,10 +10,14 @@ import java.util.List;
 @Repository
 public interface ApprenticeRepository extends CrudRepository<Apprentice, String>, JpaSpecificationExecutor {
 
-  List<Apprentice> findByCohortClass(String cohortClass);
-  List<Apprentice> findByEmail(String email);
+  List<Apprentice> findByCohortClassContainingIgnoreCase(String cohortClass);
+  Apprentice findByEmailContaining(String email);
+  Apprentice findByPhoneNumber(String phoneNumber);
+  List<Apprentice> findByFirstNameContainingIgnoreCase(String firstName);
+  List<Apprentice> findByLastNameContainingIgnoreCase(String lastName);
+  List<Apprentice> findByCohortContainingIgnoreCase(String cohort);
+  List<Apprentice> findByHungarianSpeaker(boolean isHungarianSpeaker);
   List<Apprentice> findAll();
-  Apprentice findById(String id);
 
 }
 

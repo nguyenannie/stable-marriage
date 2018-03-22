@@ -10,6 +10,9 @@ public interface PreferenceService {
 
   void save(Preference preference);
   List<Preference> findAllByUserId(String id);
+  List<Preference> findAll();
+  Preference findOne(long id);
+  List<String> selectedUserPreferenceNames(String guid);
 
 }
 

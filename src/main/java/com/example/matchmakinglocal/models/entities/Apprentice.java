@@ -40,6 +40,23 @@ public class Apprentice extends User {
     this.isHungarianSpeaker = isHungarianSpeaker;
   }
 
+  public Apprentice(String email,
+                    String phoneNumber,
+                    Status status,
+                    String matchedUserId,
+                    String firstName,
+                    String lastName,
+                    String cohort,
+                    String cohortClass,
+                    boolean isHungarianSpeaker) {
+    super(email, phoneNumber, status, matchedUserId);
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.cohort = cohort;
+    this.cohortClass = cohortClass;
+    this.isHungarianSpeaker = isHungarianSpeaker;
+  }
+
   public String getFirstName() {
       return firstName;
   }

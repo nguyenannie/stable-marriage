@@ -24,6 +24,13 @@ public class Preference {
     this.user = user;
   }
 
+  public Preference(long id, int ranking, String selectionId, User user) {
+    this.id = id;
+    this.ranking = ranking;
+    this.selectionId = selectionId;
+    this.user = user;
+  }
+
   public Preference(int ranking, String selectionId) {
     this.ranking = ranking;
     this.selectionId = selectionId;
